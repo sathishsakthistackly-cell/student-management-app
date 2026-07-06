@@ -1,40 +1,29 @@
+
 pipeline {
     agent any
 
     environment {
-        IMAGE_BACKEND = "student-backend"
-        IMAGE_FRONTEND = "student-frontend"
+        IMAGE_BACKEND = "student-management-app-backend:latest"
+        IMAGE_FRONTEND = "student-management-app-frontend:latest"
     }
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/YOUR_REPO/student-management-app.git'
-            }
-        }
-
         stage('Build Backend Image') {
             steps {
-                script {
-                    sh "docker build -t $IMAGE_BACKEND ./backend"
-                }
+                sh 'docker build -t student-management-app-backend:latest ./backend'
             }
         }
 
         stage('Build Frontend Image') {
             steps {
-                script {
-                    sh "docker build -t $IMAGE_FRONTEND ./frontend"
-                }
+                sh 'docker build -t student-management-app-frontend:latest ./frontend'
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                script {
-                    sh "kubectl apply -f kubernetes/"
-                }
+                sh 'kubectl apply -f k8s/'
             }
         }
     }
