@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: student-app
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: backend
+
+  template:
+    metadata:
+      labels:
+        app: backend
+
+    spec:
+      containers:
+      - name: backend
+
+        image: student-management-app-backend:latest
+
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 3000
+
+        env:
+        - name: PORT
+          value: "3000"
+
+        - name: DB_HOST
+          value: "mysql-service"
+
+        - name: DB_USER
+          value: "root"
+
+        - name: DB_PASSWORD
+          value: "root123"
+
+        - name: DB_NAME
+          value: "studentdb"
